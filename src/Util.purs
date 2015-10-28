@@ -15,30 +15,35 @@ import Data.Date
 
 import Prelude ( ($), (>>=), flip )
 
+ffi = unsafeForeignFunction
+
 class Magnitude n
 
 instance numberMagnitude :: Magnitude Number
 instance dateMagnitude :: Magnitude JSDate
 
 min' :: forall d m. (Magnitude m) => (d -> m) -> Array d -> m
-min' = unsafeForeignFunction ["fn", "data"] "d3.min(data, fn)"
+min' = ffi ["fn", "data"] "d3.min(data, fn)"
 
 max' :: forall d m. (Magnitude m) => (d -> m) -> Array d -> m
-max' = unsafeForeignFunction ["fn", "data"] "d3.max(data, fn)"
+max' = ffi ["fn", "data"] "d3.max(data, fn)"
 
 min :: forall m. (Magnitude m) => Array m -> m
-min = unsafeForeignFunction ["data"] "d3.min(data)"
+min = ffi ["data"] "d3.min(data)"
 
 max :: forall d m. (Magnitude m) => Array m -> m
-max = unsafeForeignFunction ["data"] "d3.max(data)"
+max = ffi ["data"] "d3.max(data)"
 
 -- extent takes a data array and returns [min,max]
 -- not restricted to Number, i.e. also works with time
 extent :: forall m. (Magnitude m) => Array m -> Array m
-extent = unsafeForeignFunction ["data"] "d3.extent(data)"
+extent = ffi ["data"] "d3.extent(data)"
 
 extent' :: forall d m. (Magnitude m) => (d->m) -> Array d -> Array m
-extent' = unsafeForeignFunction ["fn", "data"] "d3.extent(data, fn)"
+extent' = ffi ["fn", "data"] "d3.extent(data, fn)"
+
+range :: Number -> Number -> Number -> Array Number
+range = ffi ["start", "stop", "step"] "d3.range(start, stop, step)" 
 
 -- Syntactic sugar to make chained monadic statements look similar to the
 -- "fluid interface" style of chained method calls in JavaScript
