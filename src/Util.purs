@@ -6,6 +6,7 @@ module Graphics.D3.Util
   , max'
   , extent
   , extent'
+  , range
   , (..)
   , (...)
   ) where
@@ -43,7 +44,7 @@ extent' :: forall d m. (Magnitude m) => (d->m) -> Array d -> Array m
 extent' = ffi ["fn", "data"] "d3.extent(data, fn)"
 
 range :: Number -> Number -> Number -> Array Number
-range = ffi ["start", "stop", "step"] "d3.range(start, stop, step)" 
+range = ffi ["start", "stop", "step"] "d3.range(start, stop, step)"
 
 -- Syntactic sugar to make chained monadic statements look similar to the
 -- "fluid interface" style of chained method calls in JavaScript
