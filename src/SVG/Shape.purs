@@ -8,7 +8,7 @@ module Graphics.D3.SVG.Shape
   ) where
 
   import Graphics.D3.Base
-
+  import Graphics.D3.Selection
   import Data.Foreign.EasyFFI
 
   ffi = unsafeForeignFunction
@@ -16,6 +16,8 @@ module Graphics.D3.SVG.Shape
   foreign import data Arc :: *
 
   foreign import arc :: D3Eff Arc
+
+  instance attrValArc :: AttrValue Arc
 
   outerRadius :: Number -> Arc -> D3Eff Arc
   outerRadius = ffi ["radius", "arc", ""] "arc.outerRadius(radius)"
