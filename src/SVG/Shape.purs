@@ -3,6 +3,7 @@ module Graphics.D3.SVG.Shape
     arc,
     outerRadius,
     innerRadius,
+    cornerRadius,
     startAngle',
     endAngle'
   ) where
@@ -24,6 +25,9 @@ module Graphics.D3.SVG.Shape
 
   innerRadius :: Number -> Arc -> D3Eff Arc
   innerRadius = ffi ["radius", "arc", ""] "arc.innerRadius(radius)"
+
+  cornerRadius :: Number -> Arc -> D3Eff Arc
+  cornerRadius = ffi ["radius", "arc", ""] "arc.cornerRadius(radius)"
 
   startAngle' :: forall d v. (d -> v) -> Arc -> D3Eff Arc
   startAngle' = ffi ["angle", "arc", ""] "arc.startAngle(angle)"

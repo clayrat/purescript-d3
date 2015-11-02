@@ -34,6 +34,7 @@ module Graphics.D3.Scale
   , rangeRoundBands
   , rangeBand
   , rangeExtent
+  , category10
   ) where
 
 import Graphics.D3.Base
@@ -129,6 +130,8 @@ rangeExtent :: forall d r. OrdinalScale d Number -> D3Eff (Tuple Number Number)
 rangeExtent scale = do
   [min, max] <- ffi ["scale"] "scale.rangeExtent" scale
   return $ Tuple min max
+
+foreign import category10 :: forall d. D3Eff (OrdinalScale d String)
 
 -- Scale class instances
 

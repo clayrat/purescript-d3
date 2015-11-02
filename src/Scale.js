@@ -20,3 +20,5 @@ exports.quantileScale = d3.scale.quantile;
 exports.thresholdScale = d3.scale.threshold;
 
 exports.ordinalScale = d3.scale.ordinal;
+
+exports.category10 = d3.scale.category10;
