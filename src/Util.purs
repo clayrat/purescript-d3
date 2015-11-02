@@ -6,6 +6,7 @@ module Graphics.D3.Util
   , max'
   , extent
   , extent'
+  , translateStr
   , range
   , (..)
   , (...)
@@ -14,7 +15,7 @@ module Graphics.D3.Util
 import Data.Foreign.EasyFFI
 import Data.Date
 
-import Prelude ( ($), (>>=), flip )
+import Prelude ( ($), (>>=), flip, (++), show )
 
 ffi = unsafeForeignFunction
 
@@ -32,7 +33,7 @@ max' = ffi ["fn", "data"] "d3.max(data, fn)"
 min :: forall m. (Magnitude m) => Array m -> m
 min = ffi ["data"] "d3.min(data)"
 
-max :: forall d m. (Magnitude m) => Array m -> m
+max :: forall m. (Magnitude m) => Array m -> m
 max = ffi ["data"] "d3.max(data)"
 
 -- extent takes a data array and returns [min,max]
@@ -42,6 +43,9 @@ extent = ffi ["data"] "d3.extent(data)"
 
 extent' :: forall d m. (Magnitude m) => (d->m) -> Array d -> Array m
 extent' = ffi ["fn", "data"] "d3.extent(data, fn)"
+
+translateStr :: Number -> Number -> String
+translateStr x y = "translate(" ++ show x ++ "," ++ show y ++ ")"
 
 range :: Number -> Number -> Number -> Array Number
 range = ffi ["start", "stop", "step"] "d3.range(start, stop, step)"
