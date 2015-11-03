@@ -1,16 +1,20 @@
 module Graphics.D3.SVG.Shape
-  ( Arc(),
-    arc,
-    outerRadius,
-    innerRadius,
-    cornerRadius,
-    startAngle',
-    endAngle'
-  ) where
+    ( Arc()
+    , arc
+    , ArcDescriptor()
+    , outerRadius
+    , innerRadius
+    , cornerRadius
+    , startAngle'
+    , endAngle'
+    , centroid
+    ) where
+
+  import Data.Foreign.EasyFFI
+  import Prelude hiding (append)
 
   import Graphics.D3.Base
   import Graphics.D3.Selection
-  import Data.Foreign.EasyFFI
 
   ffi = unsafeForeignFunction
 
@@ -19,6 +23,8 @@ module Graphics.D3.SVG.Shape
   foreign import arc :: D3Eff Arc
 
   instance attrValArc :: AttrValue Arc
+
+  type ArcDescriptor d = { data :: d, value :: Number, startAngle:: Number, endAngle :: Number, padAngle :: Number }
 
   outerRadius :: Number -> Arc -> D3Eff Arc
   outerRadius = ffi ["radius", "arc", ""] "arc.outerRadius(radius)"
@@ -34,3 +40,6 @@ module Graphics.D3.SVG.Shape
 
   endAngle' :: forall d v. (d -> v) -> Arc -> D3Eff Arc
   endAngle' = ffi ["angle", "arc", ""] "arc.endAngle(angle)"
+
+  centroid :: forall v. ArcDescriptor v -> Arc -> String
+  centroid = ffi ["d", "arc"] "arc.centroid(d)"
