@@ -14,6 +14,7 @@ module Graphics.D3.Selection
   , select
   , selectAll
   , bindData
+  , bindData'
   , enter
   , exit
   , transition
@@ -75,11 +76,14 @@ rootSelectAll = ffi ["selector", ""] "d3.selectAll(selector)"
 select :: forall d. String -> Selection d -> D3Eff (Selection d)
 select = ffi ["selector", "selection", ""] "selection.select(selector)"
 
-selectAll :: forall d. String -> Selection d -> D3Eff (Selection Void)
+selectAll :: forall d. String -> Selection d -> D3Eff (Selection d)
 selectAll = ffi ["selector", "selection", ""] "selection.selectAll(selector)"
 
 bindData :: forall oldData newData. Array newData -> Selection oldData -> D3Eff (Update newData)
 bindData = ffi ["array", "selection", ""] "selection.data(array)"
+
+bindData' :: forall oldData newData. (oldData -> (Array newData)) -> Selection oldData -> D3Eff (Update newData)
+bindData' = ffi ["f", "selection", ""] "selection.data(f)"
 
 enter :: forall d. Update d -> D3Eff (Enter d)
 enter = ffi ["update", ""] "update.enter()"
@@ -173,16 +177,16 @@ instance appendableEnter      :: Appendable Enter where
 
 -- Selection-y things that contain existing DOM elements
 class Existing s where
-  attr :: forall d v. (AttrValue v) => String -> v -> s d -> D3Eff (s d)
-  attr' :: forall d v. (AttrValue v) => String -> (d -> v) -> s d -> D3Eff (s d)
-  attr'' :: forall d v. (AttrValue v) => String -> (d -> Number -> v) -> s d -> D3Eff (s d)
-  style :: forall d. String -> String -> s d -> D3Eff (s d)
-  style' :: forall d. String -> (d -> String) -> s d -> D3Eff (s d)
+  attr    :: forall d v. (AttrValue v) => String -> v -> s d -> D3Eff (s d)
+  attr'   :: forall d v. (AttrValue v) => String -> (d -> v) -> s d -> D3Eff (s d)
+  attr''  :: forall d v. (AttrValue v) => String -> (d -> Number -> v) -> s d -> D3Eff (s d)
+  style   :: forall d. String -> String -> s d -> D3Eff (s d)
+  style'  :: forall d. String -> (d -> String) -> s d -> D3Eff (s d)
   style'' :: forall d. String -> (d -> Number -> String) -> s d -> D3Eff (s d)
-  text :: forall d. String -> s d -> D3Eff (s d)
-  text' :: forall d. (d -> String) -> s d -> D3Eff (s d)
-  text'' :: forall d. (d -> Number -> String) -> s d -> D3Eff (s d)
-  remove :: forall d. s d -> D3Eff Unit
+  text    :: forall d. String -> s d -> D3Eff (s d)
+  text'   :: forall d. (d -> String) -> s d -> D3Eff (s d)
+  text''  :: forall d. (d -> Number -> String) -> s d -> D3Eff (s d)
+  remove  :: forall d. s d -> D3Eff Unit
 
 instance existingSelection :: Existing Selection where
   attr = unsafeAttr
