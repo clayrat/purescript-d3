@@ -4,6 +4,7 @@ module Graphics.D3.SVG.Shape
     , ArcDescriptor()
     , outerRadius
     , innerRadius
+    , padRadius
     , cornerRadius
     , startAngle'
     , endAngle'
@@ -31,6 +32,9 @@ module Graphics.D3.SVG.Shape
 
   innerRadius :: Number -> Arc -> D3Eff Arc
   innerRadius = ffi ["radius", "arc", ""] "arc.innerRadius(radius)"
+
+  padRadius :: Number -> Arc -> D3Eff Arc
+  padRadius = ffi ["radius", "arc", ""] "arc.padRadius(radius)"
 
   cornerRadius :: Number -> Arc -> D3Eff Arc
   cornerRadius = ffi ["radius", "arc", ""] "arc.cornerRadius(radius)"
